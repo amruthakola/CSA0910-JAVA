@@ -1,0 +1,75 @@
+public class SmartWasteCollection extends JFrame
+
+Main collections used:
+static ArrayList&lt;Resident&gt; residents = new ArrayList&lt;Resident&gt;();
+static ArrayList&lt;Bin&gt; bins = new ArrayList&lt;Bin&gt;();
+static ArrayList&lt;Vehicle&gt; vehicles = new ArrayList&lt;Vehicle&gt;();
+static ArrayList&lt;Route&gt; routes = new ArrayList&lt;Route&gt;();
+static ArrayList&lt;CollectionRequest&gt; requests =
+new ArrayList&lt;CollectionRequest&gt;();
+static HashSet&lt;String&gt; requestIds = new HashSet&lt;String&gt;();
+static HashMap&lt;String, CollectionRequest&gt; requestMap =
+new HashMap&lt;String, CollectionRequest&gt;();
+static Hashtable&lt;String, String&gt; waitList =
+new Hashtable&lt;String, String&gt;();
+
+Sample resident data:
+residents.add(new Resident(&quot;R001&quot;, &quot;Ananya&quot;, &quot;Anna Nagar&quot;));
+residents.add(new Resident(&quot;R002&quot;, &quot;Rahul&quot;, &quot;Velachery&quot;));
+residents.add(new Resident(&quot;R003&quot;, &quot;Priya&quot;, &quot;Adyar&quot;));
+residents.add(new Resident(&quot;R004&quot;, &quot;Karthik&quot;, &quot;T Nagar&quot;));
+residents.add(new Resident(&quot;R005&quot;, &quot;Sneha&quot;, &quot;Guindy&quot;));
+residents.add(new Resident(&quot;R006&quot;, &quot;Arjun&quot;, &quot;Tambaram&quot;));
+
+Sample waste-bin data:
+bins.add(new Bin(&quot;B001&quot;, &quot;Anna Nagar&quot;, &quot;General&quot;, 35));
+bins.add(new RecyclableBin(&quot;B002&quot;, &quot;Velachery&quot;, 65));
+
+bins.add(new Bin(&quot;B003&quot;, &quot;Adyar&quot;, &quot;Organic&quot;, 82));
+bins.add(new Bin(&quot;B004&quot;, &quot;T Nagar&quot;, &quot;General&quot;, 45));
+bins.add(new RecyclableBin(&quot;B005&quot;, &quot;Guindy&quot;, 90));
+bins.add(new Bin(&quot;B006&quot;, &quot;Tambaram&quot;, &quot;Organic&quot;, 55));
+
+Sample vehicles:
+vehicles.add(new SpecialVehicle(
+&quot;V001&quot;, &quot;Waste Collector&quot;, 1000, &quot;Available&quot;));
+vehicles.add(new SpecialVehicle(
+&quot;V002&quot;, &quot;Recycling Truck&quot;, 800, &quot;Busy&quot;));
+vehicles.add(new SpecialVehicle(
+&quot;V003&quot;, &quot;Special Vehicle&quot;, 1200, &quot;Available&quot;));
+vehicles.add(new SpecialVehicle(
+&quot;V004&quot;, &quot;Waste Collector&quot;, 1000, &quot;Maintenance&quot;));
+
+Sample routes:
+routes.add(new Route(&quot;RT001&quot;, &quot;Anna Nagar&quot;, &quot;08:00 AM&quot;, &quot;V001&quot;));
+routes.add(new Route(&quot;RT002&quot;, &quot;Velachery&quot;, &quot;09:00 AM&quot;, &quot;V002&quot;));
+routes.add(new Route(&quot;RT003&quot;, &quot;Adyar&quot;, &quot;10:30 AM - DELAY&quot;, &quot;V003&quot;));
+routes.add(new Route(&quot;RT004&quot;, &quot;T Nagar&quot;, &quot;11:00 AM&quot;, &quot;V001&quot;));
+routes.add(new Route(&quot;RT005&quot;, &quot;Guindy&quot;, &quot;12:30 PM&quot;, &quot;V003&quot;));
+
+Overflow detection:
+int getOverflowCount() {
+int count = 0;
+for (Bin b : bins) {
+if (b.getFillLevel() &gt;= 80)
+
+count++;
+}
+return count;
+}
+
+Multithreading:
+BinMonitor monitor = new BinMonitor();
+RouteMonitor routeMonitor = new RouteMonitor();
+monitor.setPriority(Thread.MAX_PRIORITY);
+routeMonitor.setPriority(Thread.NORM_PRIORITY);
+monitor.start();
+routeMonitor.start();
+
+OOP classes used:
+Resident, Bin, RecyclableBin, Vehicle, SpecialVehicle, Route, CollectionRequest.
+
+Custom exceptions:
+class InvalidResidentException extends Exception
+class DuplicateRequestException extends Exception
+class VehicleUnavailableException extends Exception
